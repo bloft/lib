@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.21'
+		compile 'com.j256.simplejmx:simplejmx:1.10'
+		compile 'commons-configuration:commons-configuration:1.7'
+		compile 'com.google.guava:guava:17.0'
+		compile 'com.thoughtworks.xstream:xstream:1.4.5'
+
+    testCompile 'junit:junit:4.12'
+		testCompile 'org.hamcrest:hamcrest-all:1.3'
+}

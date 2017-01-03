@@ -1,0 +1,9 @@
+<application>
+    <logging>classpath:/META-INF/logging.properties</logging>
+
+    <configuration>
+        <url>classpath:/META-INF/config.properties</url>
+    </configuration>
+
+    <timer />
+</application>
