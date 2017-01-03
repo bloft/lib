@@ -1,0 +1,2 @@
+# lib
+My Java library
