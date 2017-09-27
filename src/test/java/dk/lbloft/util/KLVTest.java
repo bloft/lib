@@ -17,7 +17,11 @@ public class KLVTest {
 		assertThat(new Tlv().put(Day.MONDAY, "test").getBytes(), equalTo(new byte[] {0, 4, 116, 101, 115, 116}));
 		assertThat(new Tlv().put(Day.TUESDAY, "abcdefgh").getBytes(), equalTo(new byte[] {1, 8, 97, 98, 99, 100, 101, 102, 103, 104}));
 		assertThat(new Tlv().put(Day.WEDNESDAY, "test").getBytes(), equalTo(new byte[] {2, 4, 116, 101, 115, 116}));
+		assertThat(new Tlv().put(Day.MONDAY, 'a').getBytes(), equalTo(new byte[] {0, 2, 0, 97}));
+		assertThat(new Tlv().put(Day.SUNDAY, 'Ͻ').getBytes(), equalTo(new byte[] {6, 2, 3, -3}));
+		assertThat(new Tlv().put(Day.MONDAY, (byte)1).getBytes(), equalTo(new byte[] {0, 1, 1}));
 		assertThat(new Tlv().put(Day.MONDAY, 1).getBytes(), equalTo(new byte[] {0, 4, 0, 0, 0, 1}));
+		assertThat(new Tlv().put(Day.MONDAY, 1l).getBytes(), equalTo(new byte[] {0, 8, 0, 0, 0, 0, 0, 0, 0, 1}));
 		assertThat(new Tlv().put(Day.WEDNESDAY, 1234567890).getBytes(), equalTo(new byte[] {2, 4, 73, -106, 2, -46}));
 	}
 
@@ -34,6 +38,8 @@ public class KLVTest {
 	public void get() {
 		assertThat(Tlv.parse(new byte[] {1, 1, 1}).get(Day.TUESDAY), equalTo(new byte[] {1}));
 		assertThat(Tlv.parse(new byte[] {1, 1, 1}).get(Day.MONDAY), equalTo(null));
+		assertThat(Tlv.parse(new byte[] {1, 1, 1}).getEnum(Day.TUESDAY, Day.class), equalTo(Day.TUESDAY));
+		assertThat(Tlv.parse(new byte[] {1, 1, 1}).getEnum(Day.MONDAY, Day.class), equalTo(null));
 		assertThat(Tlv.parse(new byte[] {0, 4, 116, 101, 115, 116}).getString(Day.MONDAY), equalTo("test"));
 	}
 

@@ -22,12 +22,29 @@ public class Tlv extends HashMap<Byte, byte[]> {
 		return put(key, value.getBytes(Charsets.UTF_8));
 	}
 
+	public Tlv put(Enum<?> key, long value) {
+		return put(key, ByteBuffer.allocate(8).putLong(value).array());
+	}
+
 	public Tlv put(Enum<?> key, int value) {
 		return put(key, ByteBuffer.allocate(4).putInt(value).array());
 	}
 
+	public Tlv put(Enum<?> key, byte value) {
+		return put(key, ByteBuffer.allocate(1).put(value).array());
+	}
+
+	public Tlv put(Enum<?> key, char value) {
+		return put(key, ByteBuffer.allocate(2).putChar(value).array());
+	}
+
 	public Tlv put(Enum<?> key, Enum<?> value) {
 		return put(key, new byte[] { (byte)value.ordinal() });
+	}
+
+
+	public boolean containsKey(Enum<?> key) {
+		return containsKey((byte)key.ordinal());
 	}
 
 	public byte[] get(Enum<?> key) {
@@ -38,15 +55,31 @@ public class Tlv extends HashMap<Byte, byte[]> {
 		return new String(get(key), Charsets.UTF_8);
 	}
 
+	public long getLong(Enum<?> key) {
+		return ByteBuffer.wrap(get(key)).getLong();
+	}
+
 	public int getInt(Enum<?> key) {
 		return ByteBuffer.wrap(get(key)).getInt();
 	}
 
+	public Byte getByte(Enum<?> key) {
+		byte[] bytes = get(key);
+		if(bytes != null && bytes.length == 1) {
+			return bytes[0];
+		}
+		return null;
+	}
+
+	public char getChar(Enum<?> key) {
+		return ByteBuffer.wrap(get(key)).getChar();
+	}
+
 	public <T extends Enum<T>> T getEnum(Enum<?> key, Class<T> enumType) {
-		byte[] b = get(key);
-		if(b != null && b.length == 1) {
+		Byte ordinal = getByte(key);
+		if(ordinal != null) {
 			for (T e : enumType.getEnumConstants()) {
-				if(e.ordinal() == b[0]) {
+				if (e.ordinal() == ordinal) {
 					return e;
 				}
 			}
